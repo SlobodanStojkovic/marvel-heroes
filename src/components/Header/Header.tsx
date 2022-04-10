@@ -4,11 +4,11 @@ import "./Header.scss";
 
 const Header = () => {
   return (
-    <>
-      <header>
-        <Link to="/"><h1>Marvel Heroes</h1></Link> 
-      </header>
-    </>
+    <header>
+      <Link to="/">
+        <h1>Marvel Heroes</h1>
+      </Link>
+    </header>
   );
 };
 

@@ -1,14 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../assets/searchIcon.png";
+import { RootState } from "../../store";
 
 import "./Search.scss";
 
-const Search = ({ charactersTransformHandler, startSearch }) => {
-  const inputQuery = useSelector((state) => state.searchString);
+type SearchProps = {
+  charactersTransformHandler: () => void;
+  startSearch: () => void;
+};
+
+const Search: React.FC<SearchProps> = ({
+  charactersTransformHandler,
+  startSearch,
+}) => {
+  const inputQuery = useSelector((state: RootState) => state.searchString);
 
   const dispatch = useDispatch();
 
-  const searchOnEnter = (event) => {
+  const searchOnEnter = (event: any) => {
     if (event.key === "Enter") {
       dispatch({
         type: "setCharactersToShow",

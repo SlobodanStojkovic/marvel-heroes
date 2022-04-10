@@ -80,7 +80,7 @@ const Main = () => {
       };
     });
     return transformedCharacters;
-  }, [response, currentPage, searchInput]);
+  }, [response]);
 
   const startSearch = () => {
     if (searchString.length === 0) {

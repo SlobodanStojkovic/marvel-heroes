@@ -23,17 +23,25 @@ const SelectedCharacter = () => {
         <div className="comics">
           <h3>Comics</h3>
           <ol>
-            {selectedCharacter.comics.items.map((comic, index) => (
-              <li key={comic.name + Date.now() + index}>{comic.name}</li>
-            ))}
+            {selectedCharacter.comics.items.length > 0 ? (
+              selectedCharacter.comics.items.map((comic, index) => (
+                <li key={comic.name + Date.now() + index}>{comic.name}</li>
+              ))
+            ) : (
+              <li>{"There are no comics."}</li>
+            )}
           </ol>
         </div>
         <div className="stories">
           <h3>Stories</h3>
           <ol>
-            {selectedCharacter.stories.items.map((story) => (
-              <li key={story.name + Date.now()}>{story.name}</li>
-            ))}
+            {selectedCharacter.stories.items.length > 0 ? (
+              selectedCharacter.stories.items.map((story) => (
+                <li key={story.name + Date.now()}>{story.name}</li>
+              ))
+            ) : (
+              <li>{"There are no stories."}</li>
+            )}
           </ol>
         </div>
         <div className="events">
@@ -44,16 +52,20 @@ const SelectedCharacter = () => {
                 <li key={event.name + Date.now()}>{event.name}</li>
               ))
             ) : (
-              <li>{"There is no events."}</li>
+              <li>{"There are no events."}</li>
             )}
           </ol>
         </div>
         <div className="series">
           <h3>Series</h3>
           <ol>
-            {selectedCharacter.series.items.map((serie) => (
-              <li key={serie.name + Date.now()}>{serie.name}</li>
-            ))}
+            {selectedCharacter.series.items.length > 0 ? (
+              selectedCharacter.series.items.map((serie) => (
+                <li key={serie.name + Date.now()}>{serie.name}</li>
+              ))
+            ) : (
+              <li>{"There are no series."}</li>
+            )}
           </ol>
         </div>
       </div>

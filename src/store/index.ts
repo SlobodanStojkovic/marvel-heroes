@@ -6,7 +6,7 @@ const initialCharactersState = {
   totalCharacters: "",
 };
 
-const charactersReducer = (state = initialCharactersState, action) => {
+const charactersReducer = (state = initialCharactersState, action: any) => {
   if (action.type === "setData") {
     return {
       data: action.payload,
@@ -61,3 +61,5 @@ const charactersReducer = (state = initialCharactersState, action) => {
 };
 
 export default charactersReducer;
+
+export type RootState = ReturnType<typeof charactersReducer>;
