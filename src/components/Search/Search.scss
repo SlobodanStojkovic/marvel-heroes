@@ -1,0 +1,29 @@
+.search {
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  width: 70%;
+  height: 2rem;
+  padding-left: 2rem;
+  overflow-y: auto;
+  margin-bottom: 3rem;
+  border-radius: 5px;
+}
+
+.searchButton {
+  padding: 0;
+  border: none;
+  background-color: aliceblue;
+  height: 30px;
+  background: transparent;
+  padding: 0.4rem;
+}
+
+.searchIcon {
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  padding-bottom: 0.25rem;
+}

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Pagination from "../../components/Pagination/Pagination";
+import Search from "../../components/Search/Search";
 import SingleCharacter from "../../components/SingleCharacter/SingleCharacter";
 import {
   marvelApiEndpointStart,
@@ -20,12 +21,21 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const response = useSelector((state) => state.data);
-  const characters = useSelector((state) => state.charactersToShow);
+  const charactersToShow = useSelector((state) => state.charactersToShow);
+  const searchString = useSelector((state) => state.searchString);
+  const totalCharacters = useSelector((state) => state.totalCharacters);
   const limitQuery = "limit=20";
-  const offset = currentPage * 20 - 20;
+  let offset = currentPage * 20 - 20;
   const offsetQuery = "&offset=" + offset;
+  const searchInput = `&nameStartsWith=${searchString}&`;
 
-  useEffect(() => {
+  const apiEndpointWithoutSearchQuery =
+    marvelApiEndpointStart + limitQuery + offsetQuery + marvelApiEndpointEnd;
+
+  const apiEndpointWithSearchQuery =
+    marvelApiEndpointStart + searchInput + offsetQuery + marvelApiEndpointEnd;
+
+  const searchForCharacters = (fullApiEndpoint) => {
     setIsLoading(true);
     setError(null);
 
@@ -34,15 +44,13 @@ const Main = () => {
       abortController = new AbortController();
       let signal = abortController.signal;
       axios
-        .get(
-          marvelApiEndpointStart +
-            limitQuery +
-            offsetQuery +
-            marvelApiEndpointEnd,
-          { signal: signal }
-        )
+        .get(fullApiEndpoint, { signal: signal })
         .then((response) => {
           dispatch({ type: "setData", payload: response.data.data.results });
+          dispatch({
+            type: "setTotalCharacters",
+            payload: response.data.data.total,
+          });
         })
         .catch((error) => {
           setError(error.message);
@@ -50,13 +58,11 @@ const Main = () => {
 
       setTimeout(() => {
         setIsLoading(false);
-      }, 300);
+      }, 500);
     })();
 
     return () => abortController.abort();
-  }, [currentPage]);
-
-  console.log(isLoading);
+  };
 
   const charactersTransformHandler = useCallback(() => {
     const transformedCharacters = response.map((character) => {
@@ -74,11 +80,26 @@ const Main = () => {
       };
     });
     return transformedCharacters;
-  }, [response]);
+  }, [response, currentPage, searchInput]);
+
+  const startSearch = () => {
+    if (searchString.length === 0) {
+      searchForCharacters(apiEndpointWithoutSearchQuery);
+    } else {
+      searchForCharacters(apiEndpointWithSearchQuery);
+    }
+  };
 
   useEffect(() => {
-    dispatch({ type: "setCharacters", payload: charactersTransformHandler() });
-  }, [charactersTransformHandler]);
+    startSearch();
+  }, [currentPage]);
+
+  useEffect(() => {
+    dispatch({
+      type: "setCharactersToShow",
+      payload: charactersTransformHandler(),
+    });
+  }, [response, charactersTransformHandler]);
 
   return (
     <main>
@@ -86,8 +107,12 @@ const Main = () => {
       {!isLoading && error && <Error />}
       {!isLoading && !error && (
         <>
+          <Search
+            charactersTransformHandler={charactersTransformHandler}
+            startSearch={startSearch}
+          />
           <div className="charactersList">
-            {characters.map((character) => (
+            {charactersToShow.map((character) => (
               <SingleCharacter character={character} key={character.id} />
             ))}
           </div>
@@ -95,7 +120,7 @@ const Main = () => {
           <Pagination
             className="pagination-bar"
             currentPage={currentPage}
-            totalCount={1500}
+            totalCount={totalCharacters}
             pageSize={20}
             onPageChange={(page) => setCurrentPage(page)}
           />
