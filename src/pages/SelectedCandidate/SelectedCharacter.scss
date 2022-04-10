@@ -1,0 +1,64 @@
+.selectedCharacter {
+  width: fit-content;
+  margin: 8rem auto 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  transition: 0.3s;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 5rem;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  h1 {
+    margin: 1rem 0;
+  }
+
+  p {
+    font-size: 24px;
+  }
+}
+
+.basic-info {
+  text-align: center;
+  padding: 0 0 3rem;
+  max-width: 1000px;
+
+  img {
+    max-width: 500px;
+  }
+}
+
+.additional-info {
+  display: flex;
+  flex-wrap: wrap;
+
+  div {
+    width: 100%;
+    padding: 1.5rem;
+
+    @media (min-width: 768px) {
+      width: 50%;
+    }
+
+    @media (min-width: 1440px) {
+      width: 25%;
+    }
+
+    h3 {
+      padding: 0.5rem 0;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+main {
+  margin: 5rem auto 4rem;
+}
+
+.charactersList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}

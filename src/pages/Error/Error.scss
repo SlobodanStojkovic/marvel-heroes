@@ -1,0 +1,12 @@
+@import "../../assets/variables";
+
+.errorFetchingData {
+  padding: 1rem;
+  font-size: 48px;
+  color: $tomato;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
