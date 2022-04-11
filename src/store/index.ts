@@ -27,6 +27,16 @@ const charactersReducer = (state = initialCharactersState, action: any) => {
     };
   }
 
+  if (action.type === "emptyCharactersToShow") {
+    return {
+      data: state.data,
+      charactersToShow: [],
+      selectedCharacter: state.selectedCharacter,
+      searchString: state.searchString,
+      totalCharacters: state.totalCharacters,
+    };
+  }
+
   if (action.type === "setSelectedCharacter") {
     return {
       data: state.data,

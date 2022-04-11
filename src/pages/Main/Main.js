@@ -65,6 +65,9 @@ const Main = () => {
   };
 
   const charactersTransformHandler = useCallback(() => {
+    dispatch({
+      type: "emptyCharactersToShow",
+    });
     const transformedCharacters = response.map((character) => {
       return {
         id: character.id,
@@ -110,6 +113,7 @@ const Main = () => {
           <Search
             charactersTransformHandler={charactersTransformHandler}
             startSearch={startSearch}
+            setCurrentPage={setCurrentPage}
           />
           <div className="charactersList">
             {charactersToShow.map((character) => (

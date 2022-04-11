@@ -7,23 +7,30 @@ import "./Search.scss";
 type SearchProps = {
   charactersTransformHandler: () => void;
   startSearch: () => void;
+  setCurrentPage: (arg0: number) => void;
 };
 
 const Search: React.FC<SearchProps> = ({
   charactersTransformHandler,
   startSearch,
+  setCurrentPage,
 }) => {
   const inputQuery = useSelector((state: RootState) => state.searchString);
 
   const dispatch = useDispatch();
 
+  const executeSearch = () => {
+    setCurrentPage(1);
+    dispatch({
+      type: "setCharactersToShow",
+      payload: charactersTransformHandler(),
+    });
+    startSearch();
+  };
+
   const searchOnEnter = (event: any) => {
     if (event.key === "Enter") {
-      dispatch({
-        type: "setCharactersToShow",
-        payload: charactersTransformHandler(),
-      });
-      startSearch();
+      executeSearch();
     }
   };
 
@@ -45,11 +52,7 @@ const Search: React.FC<SearchProps> = ({
       <button
         className="searchButton"
         onClick={() => {
-          dispatch({
-            type: "setCharactersToShow",
-            payload: charactersTransformHandler(),
-          });
-          startSearch();
+          executeSearch();
         }}
       >
         <img className="searchIcon" src={searchIcon} alt="" />
