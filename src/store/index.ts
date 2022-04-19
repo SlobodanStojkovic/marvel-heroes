@@ -6,7 +6,7 @@ const initialCharactersState = {
   totalCharacters: "",
 };
 
-const charactersReducer = (state = initialCharactersState, action: any) => {
+const charactersReducer = (state = initialCharactersState, action: { type: string; payload: any; }) => {
   if (action.type === "setData") {
     return {
       data: action.payload,

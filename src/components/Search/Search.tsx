@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../assets/searchIcon.png";
 import { RootState } from "../../store";
@@ -28,8 +29,8 @@ const Search: React.FC<SearchProps> = ({
     startSearch();
   };
 
-  const searchOnEnter = (event: any) => {
-    if (event.key === "Enter") {
+  const searchOnEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
       executeSearch();
     }
   };

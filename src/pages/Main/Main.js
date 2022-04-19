@@ -35,34 +35,37 @@ const Main = () => {
   const apiEndpointWithSearchQuery =
     marvelApiEndpointStart + searchInput + offsetQuery + marvelApiEndpointEnd;
 
-  const searchForCharacters = (fullApiEndpoint) => {
-    setIsLoading(true);
-    setError(null);
+  const searchForCharacters = useCallback(
+    (fullApiEndpoint) => {
+      setIsLoading(true);
+      setError(null);
 
-    let abortController;
-    (async () => {
-      abortController = new AbortController();
-      let signal = abortController.signal;
-      axios
-        .get(fullApiEndpoint, { signal: signal })
-        .then((response) => {
-          dispatch({ type: "setData", payload: response.data.data.results });
-          dispatch({
-            type: "setTotalCharacters",
-            payload: response.data.data.total,
+      let abortController;
+      (async () => {
+        abortController = new AbortController();
+        let signal = abortController.signal;
+        axios
+          .get(fullApiEndpoint, { signal: signal })
+          .then((response) => {
+            dispatch({ type: "setData", payload: response.data.data.results });
+            dispatch({
+              type: "setTotalCharacters",
+              payload: response.data.data.total,
+            });
+          })
+          .catch((error) => {
+            setError(error.message);
           });
-        })
-        .catch((error) => {
-          setError(error.message);
-        });
 
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    })();
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      })();
 
-    return () => abortController.abort();
-  };
+      return () => abortController.abort();
+    },
+    [dispatch]
+  );
 
   const charactersTransformHandler = useCallback(() => {
     dispatch({
@@ -83,26 +86,31 @@ const Main = () => {
       };
     });
     return transformedCharacters;
-  }, [response]);
+  }, [dispatch, response]);
 
-  const startSearch = () => {
+  const startSearch = useCallback(() => {
     if (searchString.length === 0) {
       searchForCharacters(apiEndpointWithoutSearchQuery);
     } else {
       searchForCharacters(apiEndpointWithSearchQuery);
     }
-  };
+  }, [
+    apiEndpointWithSearchQuery,
+    searchForCharacters,
+    apiEndpointWithoutSearchQuery,
+    searchString.length,
+  ]);
 
   useEffect(() => {
     startSearch();
-  }, [currentPage]);
+  }, [startSearch, currentPage]);
 
   useEffect(() => {
     dispatch({
       type: "setCharactersToShow",
       payload: charactersTransformHandler(),
     });
-  }, [response, charactersTransformHandler]);
+  }, [response, dispatch, charactersTransformHandler]);
 
   return (
     <main>
